@@ -1,0 +1,17 @@
+:root {
+  --cor-primaria-01: rgb(17, 45, 78);
+  --cor-primaria-02: rgb(63, 114, 175);
+  --cor-primaria-03: rgb(219, 226, 239);
+  --cor-primaria-04: rgb(249, 247, 247);
+}
+
+p {
+  color: var(--cor-primaria-04);
+}
+
+body {
+  background: url(../background.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
