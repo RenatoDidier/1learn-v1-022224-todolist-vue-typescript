@@ -3,15 +3,28 @@
   --cor-primaria-02: rgb(63, 114, 175);
   --cor-primaria-03: rgb(219, 226, 239);
   --cor-primaria-04: rgb(249, 247, 247);
+
+  
+  --cor-primaria-01-035: rgba(17, 45, 78, 0.35);
+  --cor-primaria-02-035: rgba(63, 114, 175, 0.35);
+  --cor-primaria-03-035: rgba(219, 226, 239, 0.35);
+  --cor-primaria-04-035: rgba(249, 247, 247, 0.35);
+
+  --cor-primaria-01-025: rgba(17, 45, 78, 0.25);
+  --cor-primaria-02-025: rgba(63, 114, 175, 0.25);
+  --cor-primaria-03-025: rgba(219, 226, 239, 0.25);
+  --cor-primaria-04-025: rgba(249, 247, 247, 0.25);
+
+  --cor-primaria-01-012: rgba(17, 45, 78, 0.12);
+  --cor-primaria-02-012: rgba(63, 114, 175, 0.12);
+  --cor-primaria-03-012: rgba(219, 226, 239, 0.12);
+  --cor-primaria-04-012: rgba(249, 247, 247, 0.12);
 }
 
-p {
-  color: var(--cor-primaria-04);
-}
+/* html {
+  font-size: 13px;
+} */
 
-body {
-  background: url(../background.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
+.negrito {
+  font-weight: 600;
 }
