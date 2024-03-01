@@ -5,18 +5,18 @@ export function criarNovaAtividade (
   novaAtividade: string,
   listaAtividades: Atividade[]
 ) : void {
-  console.log("Teste pra ver o this");
-  if (!validacaoNovaAtividade(novaAtividade)) {
-    return;
-  }
+  // console.log("Teste pra ver o this");
+  // if (!validacaoNovaAtividade(novaAtividade)) {
+  //   return;
+  // }
 
-  const novoItem: Atividade = {
-    id: "4",
-    concluido: false,
-    titulo: novaAtividade,
-  };
+  // const novoItem: Atividade = {
+  //   id: "4",
+  //   concluido: false,
+  //   titulo: novaAtividade,
+  // };
 
-  listaAtividades.push(novoItem);
+  // listaAtividades.push(novoItem);
 };
 
 export function editarAtividade (atividadeEditada: Atividade) : void {

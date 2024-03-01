@@ -11,12 +11,24 @@ import {
   editarAtividade,
 } from "@/util/helper/funcoesCrud";
 
+import { ConsultarPrimeiraUrl } from "@/views/Todo/service/TodoServicoRequisicao";
+
 const tituloNovaAtividade = ref<string>("");
 
 const listaAtividades = ref<Atividade[]>([
   { id: "1", concluido: false, titulo: "Tarefa 1" },
   { id: "2", concluido: true, titulo: "Tarefa 2" },
 ]);
+
+const testarAxios = async () => {
+  try {
+    const response = await ConsultarPrimeiraUrl();
+
+    console.log("Testa para ver resposta", response);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const quantidadeAtividadeTotal = computed(() => {
   return listaAtividades.value.length;
@@ -47,7 +59,7 @@ const quantidadeAtividadeConcluidas = computed(() => {
             class="btn btn-secondary btn-sm"
             type="button"
             id="button-addon2"
-            @click="criarNovaAtividade(tituloNovaAtividade, listaAtividades)"
+            @click="testarAxios"
           >
             +
           </button>
@@ -112,4 +124,3 @@ const quantidadeAtividadeConcluidas = computed(() => {
   text-decoration: line-through;
 }
 </style>
-@/util/helper/funcoesCrud
