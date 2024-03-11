@@ -1,41 +1,31 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 import ComponenteListaAtividades from "@/components/ListaAtividades.vue";
 
 import { Atividade } from "@/util/helper/models";
 
 import {
+  listarTodasAtividades,
   criarNovaAtividade,
   excluirAtividade,
   editarAtividade,
 } from "@/util/helper/funcoesCrud";
 
-import { ConsultarPrimeiraUrl } from "@/views/Todo/service/TodoServicoRequisicao";
-
 const tituloNovaAtividade = ref<string>("");
 
-const listaAtividades = ref<Atividade[]>([
-  { id: "1", concluido: false, titulo: "Tarefa 1" },
-  { id: "2", concluido: true, titulo: "Tarefa 2" },
-]);
-
-const testarAxios = async () => {
-  try {
-    const response = await ConsultarPrimeiraUrl();
-
-    console.log("Testa para ver resposta", response);
-  } catch (error) {
-    console.error(error);
-  }
-};
+let listaAtividades = ref<Atividade[]>([]);
 
 const quantidadeAtividadeTotal = computed(() => {
   return listaAtividades.value.length;
 });
 
 const quantidadeAtividadeConcluidas = computed(() => {
-  return listaAtividades.value.filter((x) => x.concluido).length;
+  return listaAtividades.value.filter((x) => x.conclusao).length;
+});
+
+onMounted(async () => {
+  listaAtividades.value = await listarTodasAtividades();
 });
 </script>
 
@@ -59,7 +49,7 @@ const quantidadeAtividadeConcluidas = computed(() => {
             class="btn btn-secondary btn-sm"
             type="button"
             id="button-addon2"
-            @click="testarAxios"
+            @click="criarNovaAtividade(tituloNovaAtividade, listaAtividades)"
           >
             +
           </button>

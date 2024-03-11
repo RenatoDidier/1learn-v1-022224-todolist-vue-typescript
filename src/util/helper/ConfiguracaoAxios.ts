@@ -1,6 +1,6 @@
-import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import axios, { Axios, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
-const URL_SERVICO = 'http://localhost:5064';
+const URL_SERVICO = 'http://localhost:5206';
 const TIMEOUT_SERVICO = 5000;
 let mensagemDeErro = '';
 
@@ -10,30 +10,22 @@ const api = axios.create({
   timeout: TIMEOUT_SERVICO,
 });
 
-export async function RequestGet(
+export async function RequestGetAsync<T>(
     endpoint: string
-  )
+  ) : Promise<AxiosResponse<T>>
 {
-  try {
-    return await api.post(endpoint);
-  } catch (erro) {
-    console.error(erro);
-  }
+  return await api.get<T>(endpoint);
 }
 
-export async function RequestPost(
+export async function RequestPostAsync<T>(
     endpoint: string,
     dto: object
-  )
+  ) : Promise<AxiosResponse<T>>
 {
-  try {
-    return await api.post(endpoint, dto);
-  } catch (erro) {
-    console.error(erro);
-  }
+  return await api.post<T>(endpoint, dto);
 }
 
-export async function RequestPut(
+export async function RequestPutAsync(
     endpoint: string,
     dto: object
   )
@@ -45,16 +37,11 @@ export async function RequestPut(
   }
 }
 
-export async function RequestDelete(
-    endpoint: string,
-    dto: object
-  )
+export async function RequestDeleteAsync<T>(
+    endpoint: string
+  ) : Promise<AxiosResponse<T>>
 {
-  try {
-    return await api.delete(endpoint, dto);
-  } catch (erro) {
-    console.error(erro);
-  }
+  return await api.delete<T>(endpoint);
 }
 
 
