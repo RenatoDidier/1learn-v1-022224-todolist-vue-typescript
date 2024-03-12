@@ -33,6 +33,7 @@ defineEmits(["editarAtividade", "excluirAtividade"]);
           v-model="atividade.conclusao"
           id="testarClique"
           style="width: 20px; height: 20px; margin-right: 18px"
+          @change="$emit('editarAtividade', atividade)"
         />
         <div class="d-flex gap-2">
           <button

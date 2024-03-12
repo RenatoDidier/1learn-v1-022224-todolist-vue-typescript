@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, watch, computed, onMounted } from "vue";
 
 import ComponenteListaAtividades from "@/components/ListaAtividades.vue";
 
@@ -12,20 +12,38 @@ import {
   editarAtividade,
 } from "@/util/helper/funcoesCrud";
 
-const tituloNovaAtividade = ref<string>("");
-
+let tituloNovaAtividade = ref<string>("");
 let listaAtividades = ref<Atividade[]>([]);
 
-const quantidadeAtividadeTotal = computed(() => {
+let filtroTituloAtividades = ref<string>("");
+let filtroConclusaoAtividades = ref<boolean | null>(null);
+
+let quantidadeAtividadeTotal = computed(() => {
   return listaAtividades.value.length;
 });
-
-const quantidadeAtividadeConcluidas = computed(() => {
+let quantidadeAtividadeConcluidas = computed(() => {
   return listaAtividades.value.filter((x) => x.conclusao).length;
 });
 
+watch(filtroTituloAtividades, (novoValor, valorAntigo) => {
+  if (!novoValor) {
+    listarAtividades(
+      filtroTituloAtividades.value,
+      filtroConclusaoAtividades.value
+    );
+  }
+});
+
+const listarAtividades = async (titulo: string, conclusao: boolean | null) => {
+  const resposta: Atividade[] = await listarTodasAtividades(titulo, conclusao);
+
+  listaAtividades.value = resposta.slice();
+};
+
 onMounted(async () => {
-  listaAtividades.value = await listarTodasAtividades();
+  const resposta: Atividade[] = await listarTodasAtividades();
+
+  listaAtividades.value = resposta.slice();
 });
 </script>
 
@@ -63,21 +81,35 @@ onMounted(async () => {
           <label for="inputPesquisar" class="negrito">Pesquisar</label>
           <div class="col-12">
             <input
+              v-model="filtroTituloAtividades"
               type="text"
               id="inputPesquisar"
               class="form-control form-control-sm"
+              @keyup.enter="
+                listarAtividades(
+                  filtroTituloAtividades,
+                  filtroConclusaoAtividades
+                )
+              "
             />
           </div>
         </section>
         <section class="d-flex flex-column align-items-start">
           <label for="inputPesquisar" class="negrito">Filtrar</label>
           <select
+            v-model="filtroConclusaoAtividades"
             class="form-select form-select-sm"
             aria-label="Small select example"
+            @change="
+              listarAtividades(
+                filtroTituloAtividades,
+                filtroConclusaoAtividades
+              )
+            "
           >
-            <option selected>Todos</option>
-            <option value="1">Concluídos</option>
-            <option value="2">Em Aberto</option>
+            <option :value="null" selected>Todos</option>
+            <option :value="true">Concluídos</option>
+            <option :value="false">Em Aberto</option>
           </select>
         </section>
       </div>

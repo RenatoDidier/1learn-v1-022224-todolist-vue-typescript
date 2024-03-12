@@ -1,12 +1,15 @@
-import { Atividade, AtividadeParametros, DadosReq, RespostaReq } from "@/util/helper/models";
+import { Atividade, AtividadeParametros, DadosReq } from "@/util/helper/models";
+import { validacaoNovaAtividade, validacaoRequisicao } from "@/util/helper/funcoesAuxilio";
+import { AxiosResponse } from 'axios';
 import { 
   CriarAtividadeRequest, 
   ExcluirAtividadeRequest,
+  EditarAtividadeRequest,
   ListarTodasAtividadesRequest 
 } from "@/views/Todo/service/TodoServicoRequisicao";
-import { AxiosResponse } from 'axios';
 
-export async function listarTodasAtividades(titulo = "", conclusao = null) : Promise<Atividade[]> {
+//#region Listar Atividades
+export async function listarTodasAtividades(titulo: string = "", conclusao: boolean | null = null) : Promise<Atividade[]> {
 
   let parametros: AtividadeParametros = {
     titulo: titulo,
@@ -19,13 +22,15 @@ export async function listarTodasAtividades(titulo = "", conclusao = null) : Pro
 
   if (validacaoRequisicao(req))
   {
-    listaAtividades = req.data.listaDado;
+    listaAtividades = req.data.listaDado.slice();
 
     return req.data.listaDado;
   }
   return listaAtividades
 }
+//#endregion
 
+//#region Criar Atividade
 export async function criarNovaAtividade (
   novaAtividade: string,
   listaAtividades: Atividade[]
@@ -47,40 +52,28 @@ export async function criarNovaAtividade (
   }
     
 };
+//#endregion
 
-export function editarAtividade (atividadeEditada: Atividade) : void {
-  console.log("Configurar o editar a tarefa", atividadeEditada);
+//#region Editar Atividade
+export async function editarAtividade (atividadeEditada: Atividade) : Promise<void> {
+
+  const req: AxiosResponse<DadosReq> = await EditarAtividadeRequest(atividadeEditada);
+
+  if (validacaoRequisicao(req))
+  {
+    console.log('Mensagem de sucesso', req.data.mensagem);
+  }
 };
+//#endregion
 
+//#region Excluir Atividade
 export async function excluirAtividade (atividadeExcluida: Atividade, index: number, listaAtividades: Atividade[]) : Promise<void> {
 
   const req: AxiosResponse<DadosReq> = await ExcluirAtividadeRequest(atividadeExcluida);
-
-  console.log('Chamou aqui', req);
 
   if (validacaoRequisicao(req))
   {
     listaAtividades.splice(index, 1);
   }
 };
-
-const validacaoNovaAtividade = (titulo: string) => {
-  if (!titulo) {
-    return false;
-  }
-  return true;
-};
-
-const validacaoRequisicao = (r: AxiosResponse<DadosReq>) : boolean => {
-  if (r.data.status !== 201) {
-    if (r.data.notificacoes && r.data.notificacoes.length > 0) {
-      r.data.notificacoes.forEach(erro => {
-        console.error(`Erro: ${erro.key} - Mensagem: ${erro.message}`)
-      })
-    } else {
-      console.error(`Erro: ${r.data.mensagem}`)
-    }
-    return false;
-  }
-  return true;
-};
+//#endregion

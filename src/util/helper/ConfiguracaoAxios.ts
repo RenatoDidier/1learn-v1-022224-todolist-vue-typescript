@@ -25,16 +25,13 @@ export async function RequestPostAsync<T>(
   return await api.post<T>(endpoint, dto);
 }
 
-export async function RequestPutAsync(
+export async function RequestPutAsync<T>(
     endpoint: string,
     dto: object
-  )
+  ) : Promise<AxiosResponse<T>>
 {
-  try {
-    return await api.put(endpoint, dto);
-  } catch (erro) {
-    console.error(erro);
-  }
+  return await api.put<T>(endpoint, dto);
+
 }
 
 export async function RequestDeleteAsync<T>(
